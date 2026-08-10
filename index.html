@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08111f">
+<title>Card Bill Manager</title>
+<style>
+:root{--bg:#f3f5f8;--nav:#08111f;--card:#fff;--text:#17202c;--muted:#69758a;--blue:#536dfe;--green:#2eae72;--red:#e65b6b;--purple:#8b5cf6;--line:#e4e8ef}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit} button{border:0;cursor:pointer}
+header{background:linear-gradient(135deg,#07101e,#101b2d);color:#fff;padding:28px 20px 20px}
+header h1{margin:0;font-size:29px} header p{margin:5px 0 0;color:#aeb9c9}
+.tabs{display:flex;gap:10px;overflow:auto;background:#fff;padding:12px 14px;position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line)}
+.tab{white-space:nowrap;background:#edf2f8;color:#087ef5;padding:12px 18px;border-radius:17px;font-weight:700}.tab.active{background:#0b1422;color:#fff}
+main{max-width:1000px;margin:auto;padding:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat{background:#fff;border-radius:20px;padding:20px;box-shadow:0 5px 20px #18263a0b}.stat small{color:var(--muted);font-size:16px}.stat b{display:block;font-size:28px;margin-top:7px}
+.section{background:#fff;border-radius:22px;padding:18px;margin-top:18px;box-shadow:0 5px 20px #18263a0b}
+.section h2{margin:0 0 14px;font-size:22px}.row{display:flex;gap:10px;flex-wrap:wrap}.btn{padding:12px 16px;border-radius:13px;background:#edf2f8;color:#17202c;font-weight:700}.primary{background:var(--blue);color:#fff}.danger{background:#ffe8eb;color:#c53043}.success{background:#e7f8ef;color:#168454}
+.cards{display:grid;gap:14px}.cc{color:#fff;border-radius:20px;padding:19px;min-height:180px;box-shadow:0 9px 22px #18263a22;position:relative;overflow:hidden}.cc:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-90px;background:#ffffff12}.cc h3{margin:0;font-size:19px}.cc .bank{font-weight:800;font-size:14px;opacity:.9}.cc .num{position:absolute;right:18px;top:23px}.cc .due{font-size:29px;font-weight:800;margin:12px 0}.cc .meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;font-size:12px}.cc .meta b{display:block;font-size:14px;margin-top:4px}.blue{background:linear-gradient(135deg,#172d50,#334b78)}.redg{background:linear-gradient(135deg,#4a102e,#a52257)}.green{background:linear-gradient(135deg,#0d4537,#1e8463)}.purple{background:linear-gradient(135deg,#33205c,#7144a8)}
+.customer{padding:16px;border:1px solid var(--line);border-radius:18px;margin-bottom:12px}.customer h3{margin:0}.customer .phone{color:var(--muted);margin:4px 0 12px}
+label{display:block;font-weight:700;font-size:13px;color:#4f5c70;margin-bottom:5px}.field{margin-bottom:12px}input,select{width:100%;padding:13px 12px;border:1px solid #d8dee8;border-radius:12px;background:#fff;outline:none}input:focus{border-color:var(--blue)}
+.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.empty{text-align:center;color:var(--muted);padding:30px}
+.modal{position:fixed;inset:0;background:#0008;display:none;align-items:flex-end;z-index:20}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:20px}.sheet h2{margin-top:0}
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#111b29;color:#fff;padding:12px 18px;border-radius:13px;display:none;z-index:50}.toast.show{display:block}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(145deg,#07101e,#182b4b)}.loginbox{width:min(430px,100%);background:#fff;border-radius:25px;padding:25px}.loginbox h1{margin-top:0}.note{font-size:12px;color:var(--muted);line-height:1.5}
+@media(min-width:700px){.cards{grid-template-columns:repeat(2,1fr)}} @media(max-width:600px){main{padding:14px}.grid{gap:10px}.stat{padding:15px}.stat b{font-size:23px}.formgrid{grid-template-columns:1fr}.cc .meta{grid-template-columns:repeat(2,1fr);gap:10px}.cc{min-height:205px}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div id="login" class="login">
+  <div class="loginbox">
+    <h1>Card Bill Manager</h1>
+    <p>Secure local login</p>
+    <div class="field"><label>Mobile number</label><input id="loginMobile" inputmode="numeric" maxlength="10" placeholder="10 digit mobile"></div>
+    <div class="field"><label>Password / PIN</label><input id="loginPass" type="password" maxlength="30" placeholder="Password"></div>
+    <button class="btn primary" style="width:100%" onclick="login()">Login / Create Account</button>
+    <p class="note">Data is stored locally in this browser. Use Backup regularly. This version does not send your card data to a server.</p>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+<header><h1>Card Bill Manager</h1><p>Customers • Cards • Bills • Profit</p></header>
+<nav class="tabs">
+<button class="tab active" onclick="showTab('home',this)">Dashboard</button>
+<button class="tab" onclick="showTab('customers',this)">Customers</button>
+<button class="tab" onclick="showTab('transactions',this)">Transactions</button>
+<button class="tab" onclick="showTab('bills',this)">Bills & Due</button>
+<button class="tab" onclick="showTab('settings',this)">Backup & Security</button>
+</nav>
+<main>
+<section id="home">
+<h2>Dashboard</h2><div class="grid">
+<div class="stat"><small>Customers</small><b id="sCustomers">0</b></div><div class="stat"><small>Total Due</small><b id="sDue">₹0</b></div>
+<div class="stat"><small>Total Available</small><b id="sAvailable">₹0</b></div><div class="stat"><small>Total Credit Limit</small><b id="sLimit">₹0</b></div>
+</div>
+<div class="section"><h2>Recent Transactions</h2><div id="recent" class="empty">No transactions yet</div></div>
+</section>
+
+<section id="customers" class="hidden"><div class="row" style="justify-content:space-between;align-items:center"><h2>Customers</h2><button class="btn primary" onclick="openCustomer()">＋ Add Customer</button></div><div id="customerList"></div></section>
+<section id="transactions" class="hidden"><div class="section" style="margin-top:0"><h2>Transactions</h2><div class="row"><button class="btn primary" onclick="openTransaction('withdrawal')">＋ Withdrawal</button><button class="btn success" onclick="openTransaction('payment')">＋ Bill Payment</button></div></div><div id="transactionList" class="section"></div></section>
+<section id="bills" class="hidden"><h2>Cards & Due</h2><div id="allCards" class="cards"></div></section>
+<section id="settings" class="hidden"><h2>Backup & Security</h2><div class="section"><h2>Local data</h2><p class="note">Your data stays in this browser. Export a backup before changing/deleting browser data.</p><div class="row"><button class="btn primary" onclick="backup()">Export Backup</button><button class="btn" onclick="document.getElementById('restoreFile').click()">Restore Backup</button><input id="restoreFile" type="file" accept=".json" class="hidden" onchange="restore(event)"><button class="btn danger" onclick="logout()">Logout</button></div></div><div class="section"><h2>Login</h2><p id="accountInfo"></p></div></section>
+</main>
+</div>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='cbm_v7_data', USER='cbm_v7_user';
+let db={customers:[],transactions:[]}; let user=null;
+const money=n=>'₹'+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:0});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+function load(){try{db=JSON.parse(localStorage.getItem(KEY))||db;user=JSON.parse(localStorage.getItem(USER)||'null')}catch(e){} if(user){document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');render()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render()}
+function toast(x){let t=document.getElementById('toast');t.textContent=x;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function login(){let m=document.getElementById('loginMobile').value.trim(),p=document.getElementById('loginPass').value;if(!/^\d{10}$/.test(m)||p.length<4)return alert('Mobile 10 digit aur password kam se kam 4 characters rakhein.');user={mobile:m};localStorage.setItem(USER,JSON.stringify(user));document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');render();toast('Login successful')}
+function logout(){localStorage.removeItem(USER);location.reload()}
+function showTab(id,el){document.querySelectorAll('main>section').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');render()}
+function openModal(html){document.getElementById('sheet').innerHTML=html;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function openCustomer(){
+openModal(`<h2>Add Customer</h2><div class="field"><label>Customer name</label><input id="cName" placeholder="Ram Singh"></div><div class="field"><label>Mobile</label><input id="cMobile" inputmode="numeric" maxlength="10"></div><button class="btn primary" onclick="addCustomer()">Save Customer</button> <button class="btn" onclick="closeModal()">Cancel</button>`)
+}
+function addCustomer(){let name=document.getElementById('cName').value.trim(),mobile=document.getElementById('cMobile').value.trim();if(!name)return alert('Customer name डालें');db.customers.push({id:uid(),name,mobile,cards:[]});save();closeModal();toast('Customer saved')}
+function openCard(cid){
+openModal(`<h2>Add Credit Card</h2><div class="formgrid"><div class="field"><label>Bank</label><input id="bank" placeholder="HDFC Bank"></div><div class="field"><label>Card name</label><input id="cardName" placeholder="Infinia"></div><div class="field"><label>Last 4 digits</label><input id="last4" inputmode="numeric" maxlength="4"></div><div class="field"><label>Network</label><select id="network"><option>VISA</option><option>Mastercard</option><option>RuPay</option><option>Amex</option></select></div><div class="field"><label>Total credit limit</label><input id="limit" type="number"></div><div class="field"><label>Current due</label><input id="due" type="number"></div><div class="field"><label>Statement date (day)</label><input id="stmt" type="number" min="1" max="31" placeholder="5"></div><div class="field"><label>Due date (day)</label><input id="dueDay" type="number" min="1" max="31" placeholder="25"></div></div><p class="note">Security: full 16-digit/CVV ko store nahi kar rahe; sirf last 4 digits rakhein.</p><button class="btn primary" onclick="addCard('${cid}')">Save Card</button> <button class="btn" onclick="closeModal()">Cancel</button>`)
+}
+function addCard(cid){let c=db.customers.find(x=>x.id===cid);let limit=+document.getElementById('limit').value||0,due=+document.getElementById('due').value||0;if(!document.getElementById('bank').value||!limit)return alert('Bank aur credit limit डालें');c.cards.push({id:uid(),bank:document.getElementById('bank').value,cardName:document.getElementById('cardName').value,last4:document.getElementById('last4').value,network:document.getElementById('network').value,limit,due,statementDay:+document.getElementById('stmt').value||1,dueDay:+document.getElementById('dueDay').value||25,withdrawals:[],payments:[]});save();closeModal();toast('Card saved')}
+function openTransaction(type){
+let opts=db.customers.flatMap(c=>c.cards.map(k=>`<option value="${c.id}|${k.id}">${c.name} — ${k.bank} •••• ${k.last4}</option>`)).join('');
+openModal(`<h2>${type==='withdrawal'?'Withdrawal':'Bill Payment'}</h2><div class="field"><label>Customer / Card</label><select id="txCard">${opts||'<option>No card added</option>'}</select></div><div class="field"><label>Amount</label><input id="txAmt" type="number" placeholder="50000"></div><div class="field"><label>Date</label><input id="txDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div><button class="btn primary" onclick="addTx('${type}')">Save</button> <button class="btn" onclick="closeModal()">Cancel</button><p class="note">${type==='withdrawal'?'Withdrawal charges: 3% income and 1.7% cost.':'Bill payment par koi charge nahi lagega.'}</p>`)
+}
+function addTx(type){let [cid,kid]=(document.getElementById('txCard').value||'|').split('|'),a=+document.getElementById('txAmt').value;if(!kid||a<=0)return alert('Card aur amount डालें');let c=db.customers.find(x=>x.id===cid),k=c.cards.find(x=>x.id===kid);db.transactions.unshift({id:uid(),type,cid,kid,amount:a,date:document.getElementById('txDate').value});if(type==='withdrawal'){k.withdrawals.push(a);k.due+=a}else{k.payments.push(a);k.due=Math.max(0,k.due-a)}save();closeModal();toast('Transaction saved')}
+function nextStatement(k){let d=new Date(),day=k.statementDay||1;let y=d.getFullYear(),m=d.getMonth();if(d.getDate()>=day)m++;let x=new Date(y,m,day);return x.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
+function cardHtml(c,k){let avail=Math.max(0,k.limit-k.due),bg=['blue','redg','green','purple'][Math.abs((k.bank||'').length)%4];return `<div class="cc ${bg}"><div class="bank">${k.bank}</div><h3>${k.cardName||'Credit Card'}</h3><div class="num">•••• ${k.last4||'----'}<br><small>${k.network}</small></div><div>TOTAL DUE</div><div class="due">${money(k.due)}</div><div class="meta"><div>LIMIT<b>${money(k.limit)}</b></div><div>AVAILABLE<b>${money(avail)}</b></div><div>STATEMENT<b>${k.statementDay||'-'}th</b></div><div>DUE DATE<b>${k.dueDay||'-'}th</b></div></div><div style="margin-top:10px;font-size:12px">Next statement: ${nextStatement(k)}</div></div>`}
+function render(){if(!user)return;let customers=db.customers||[],cards=customers.flatMap(c=>c.cards.map(k=>({c,k})));let due=cards.reduce((s,x)=>s+x.k.due,0),lim=cards.reduce((s,x)=>s+x.k.limit,0),av=cards.reduce((s,x)=>s+Math.max(0,x.k.limit-x.k.due),0);document.getElementById('sCustomers').textContent=customers.length;document.getElementById('sDue').textContent=money(due);document.getElementById('sLimit').textContent=money(lim);document.getElementById('sAvailable').textContent=money(av);document.getElementById('accountInfo').textContent='Logged in: '+user.mobile;
+document.getElementById('customerList').innerHTML=customers.length?customers.map(c=>`<div class="customer"><h3>${c.name}</h3><div class="phone">📞 ${c.mobile||'—'} • ${c.cards.length} card(s)</div><div class="row"><button class="btn primary" onclick="openCard('${c.id}')">＋ Add Card</button></div>${c.cards.length?'<div class="cards" style="margin-top:14px">'+c.cards.map(k=>cardHtml(c,k)).join('')+'</div>':'<div class="empty">No cards yet</div>'}</div>`).join(''):'<div class="section empty">No customers. Add your first customer.</div>';
+document.getElementById('allCards').innerHTML=cards.length?cards.map(x=>cardHtml(x.c,x.k)).join(''):'<div class="section empty">No cards yet.</div>';
+document.getElementById('transactionList').innerHTML=db.transactions.length?db.transactions.map(t=>{let c=customers.find(x=>x.id===t.cid),k=c&&c.cards.find(x=>x.id===t.kid);return `<div style="padding:12px 0;border-bottom:1px solid var(--line)"><b>${t.type==='withdrawal'?'Withdrawal':'Bill Payment'}</b> — ${money(t.amount)}<br><span class="note">${c?.name||''} • ${k?.bank||''} • ${t.date}</span></div>`}).join(''):'<div class="empty">No transactions yet</div>';
+document.getElementById('recent').innerHTML=db.transactions.length?db.transactions.slice(0,5).map(t=>`<div style="padding:9px 0;border-bottom:1px solid var(--line)">${t.type==='withdrawal'?'Withdrawal':'Bill Payment'} — <b>${money(t.amount)}</b> • ${t.date}</div>`).join(''):'No transactions yet';
+}
+function backup(){let blob=new Blob([JSON.stringify({version:7,exported:new Date().toISOString(),data:db},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='card-bill-manager-backup.json';a.click();URL.revokeObjectURL(a.href);toast('Backup exported')}
+function restore(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.data?.customers)throw 0;db=x.data;save();toast('Backup restored')}catch(_){alert('Invalid backup file')}};r.readAsText(f)}
+load();
+</script>
+</body>
+</html>
