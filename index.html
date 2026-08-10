@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070b16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Card Bill Manager v6</title>
+<style>
+:root{--bg:#070b16;--panel:#111827;--panel2:#182235;--text:#f7f8fb;--muted:#8f9ab0;--blue:#5b7cff;--green:#4ed69b;--red:#ff7580;--purple:#b36cff;--line:#28344d;--gold:#e7c46a}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Arial,sans-serif}body{min-height:100vh}.app{max-width:540px;margin:auto;min-height:100vh;padding-bottom:96px}.top{padding:18px 18px 12px;position:sticky;top:0;background:rgba(7,11,22,.94);backdrop-filter:blur(18px);z-index:8;border-bottom:1px solid #111a2b}.title{font-size:27px;font-weight:850}.sub{color:var(--muted);margin-top:4px}.content{padding:14px 16px}.row{display:flex;gap:9px;overflow:auto}.pill{background:var(--panel2);border:1px solid var(--line);padding:10px 14px;border-radius:18px;white-space:nowrap}.pill.active{background:var(--blue);border-color:var(--blue)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--panel);border:1px solid #1b2840;border-radius:18px;padding:15px}.stat small{color:var(--muted)}.stat b{display:block;font-size:22px;margin-top:7px}.section{font-size:20px;font-weight:850;margin:22px 0 12px}.customer{background:linear-gradient(135deg,#111a2c,#0c1321);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:12px}.customerTop{display:flex;align-items:center;gap:12px}.avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#6684ff,#7c4dff);font-weight:850}.spacer{flex:1}.muted{color:var(--muted)}.btn{background:var(--panel2);border:1px solid var(--line);padding:10px 13px;border-radius:13px;color:var(--text)}.primary{background:var(--blue);border:0;padding:12px 16px;border-radius:14px;font-weight:750;color:#fff}.danger{color:var(--red)}.green{color:var(--green)}.card{border-radius:20px;padding:18px;margin:12px 0;border:1px solid #526078;min-height:185px;box-shadow:0 12px 28px #0006}.hdfc{background:linear-gradient(135deg,#242424,#0d0d0d)}.axis{background:linear-gradient(135deg,#68143f,#280d27)}.sbi{background:linear-gradient(135deg,#12345e,#071b38)}.other{background:linear-gradient(135deg,#292c56,#17152f)}.cardHead,.cardFoot{display:flex;justify-content:space-between;gap:12px}.cardName{font-weight:800;font-size:18px}.due{font-size:32px;font-weight:850;margin:16px 0 9px}.cardFoot div{flex:1}.cardFoot small{color:#aab3c4;display:block;font-size:11px}.cardFoot b{font-size:14px}.addCard{border:1px dashed var(--blue);padding:18px;text-align:center;border-radius:18px;color:#7f9aff;font-weight:750}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(540px,100%);height:78px;background:rgba(10,15,27,.97);border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;z-index:10}.nav button{background:none;color:var(--muted);display:flex;flex-direction:column;gap:5px;align-items:center;font-size:12px}.nav button.active{color:#7f9aff}.fab{width:56px;height:56px;border-radius:50%;background:var(--blue);font-size:30px;line-height:56px;padding:0}.modal{position:fixed;inset:0;background:#0009;display:none;align-items:flex-end;z-index:30}.modal.show{display:flex}.sheet{background:#0d1422;border-top:1px solid var(--line);border-radius:24px 24px 0 0;padding:20px;width:100%;max-height:90vh;overflow:auto}.field{margin:10px 0}.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}.field input,.field select{width:100%;padding:13px;border-radius:12px;border:1px solid var(--line);background:#111a2b;color:var(--text);outline:none}.actions{display:flex;gap:9px;margin-top:15px}.actions>*{flex:1}.notice{padding:12px;border:1px solid #31405d;background:#101a2c;border-radius:14px;color:#cdd5e5;font-size:13px}.login{min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at top,#17254a,#070b16 55%)}.loginBox{width:min(430px,100%);background:#0e1626;border:1px solid var(--line);border-radius:25px;padding:24px;box-shadow:0 25px 80px #0008}.logo{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,#5b7cff,#b36cff);display:grid;place-items:center;font-size:30px;margin-bottom:16px}.error{color:var(--red);min-height:20px;font-size:13px}.small{font-size:12px;color:var(--muted)}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.empty{text-align:center;padding:35px 12px;color:var(--muted)}.tx{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:13px;margin:8px 0}.txline{display:flex;justify-content:space-between;gap:10px}.badge{font-size:11px;padding:4px 7px;border-radius:8px;background:#24314a}.profitCard{background:linear-gradient(135deg,#142b27,#101b22);border:1px solid #234c43}.backupBox{background:#101a2b;border:1px solid var(--line);border-radius:18px;padding:15px;margin-top:12px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+"use strict";
+
+/* Card Bill Manager v6
+   Security model:
+   - App data is stored in IndexedDB as AES-GCM encrypted JSON.
+   - Key is derived from the user's password/PIN using PBKDF2.
+   - Backup files contain encrypted payload + salt/IV and require the same password to restore.
+   - CVV is intentionally NOT stored.
+*/
+
+const DB_NAME="cardbillmanager-v6", DB_STORE="vault", DB_KEY="app";
+let sessionKey=null, sessionSalt=null, appData=null, editingCustomer=null, editingCard=null;
+const $=s=>document.querySelector(s);
+const fmt=n=>"₹"+Math.round(Number(n)||0).toLocaleString("en-IN");
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(16).slice(2);
+const today=()=>new Date().toISOString().slice(0,10);
+
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(DB_STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function dbGet(){const db=await openDB();return new Promise((res,rej)=>{const r=db.transaction(DB_STORE).objectStore(DB_STORE).get(DB_KEY);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function dbPut(v){const db=await openDB();return new Promise((res,rej)=>{const r=db.transaction(DB_STORE,"readwrite").objectStore(DB_STORE).put(v,DB_KEY);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+
+function b64(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)))}
+function ub64(s){return Uint8Array.from(atob(s),c=>c.charCodeAt(0)).buffer}
+async function derive(password,salt){
+  const raw=await crypto.subtle.importKey("raw",new TextEncoder().encode(password),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:250000,hash:"SHA-256"},raw,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])
+}
+async function encryptData(data,key){
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ct=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(JSON.stringify(data)));
+  return {iv:b64(iv),ct:b64(ct)}
+}
+async function decryptData(pack,key){
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:new Uint8Array(ub64(pack.iv))},key,ub64(pack.ct));
+  return JSON.parse(new TextDecoder().decode(pt))
+}
+async function save(){
+  const pack=await encryptData(appData,sessionKey);
+  await dbPut({v:1,salt:b64(sessionSalt),pack,updatedAt:new Date().toISOString()});
+}
+async function hasVault(){return !!(await dbGet())}
+function blank(){return {customers:[],transactions:[],settings:{withdrawIncome:3,withdrawCost:1.7}}}
+
+async function setup(password){
+  sessionSalt=crypto.getRandomValues(new Uint8Array(16));
+  sessionKey=await derive(password,sessionSalt); appData=blank(); await save(); render();
+}
+async function unlock(password){
+  const rec=await dbGet(); if(!rec) return false;
+  try{
+    const salt=new Uint8Array(ub64(rec.salt)); const key=await derive(password,salt);
+    const data=await decryptData(rec.pack,key); sessionSalt=salt;sessionKey=key;appData=data;render();return true;
+  }catch(e){return false}
+}
+function logout(){sessionKey=null;sessionSalt=null;appData=null;render()}
+
+function customerStats(c){
+  const cards=c.cards||[];
+  return {
+    limit:cards.reduce((a,x)=>a+(+x.limit||0),0),
+    due:cards.reduce((a,x)=>a+(+x.due||0),0),
+    available:cards.reduce((a,x)=>a+(+x.available||0),0)
+  }
+}
+function cardClass(bank){let b=(bank||"").toLowerCase();return b.includes("hdfc")?"hdfc":b.includes("axis")?"axis":b.includes("sbi")?"sbi":"other"}
+function initials(n){return (n||"?").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase()}
+
+function render(){
+  if(!sessionKey){renderLogin();return}
+  renderApp();
+}
+function renderLogin(){
+  document.body.innerHTML=`<div class="login"><div class="loginBox">
+    <div class="logo">₹</div><div class="title">Card Bill Manager</div>
+    <div class="sub">Encrypted local data • Backup & Restore</div>
+    <div id="loginForm" style="margin-top:20px">
+      <div class="field"><label>Mobile number</label><input id="mobile" inputmode="numeric" maxlength="10" placeholder="10 digit mobile"></div>
+      <div class="field"><label>Password / PIN</label><input id="pass" type="password" minlength="6" placeholder="Minimum 6 characters"></div>
+      <div class="error" id="loginErr"></div>
+      <button class="primary" style="width:100%" onclick="loginAction()">Login / Create Vault</button>
+      <div class="small" style="margin-top:12px">पहली बार यही password vault की encryption key बनाने में इस्तेमाल होगा। इसे भूलने पर encrypted data recover नहीं किया जा सकता।</div>
+    </div>
+  </div></div>`;
+}
+async function loginAction(){
+  const p=$("#pass").value.trim(), m=$("#mobile").value.trim();
+  if(!/^\d{10}$/.test(m)||p.length<6){$("#loginErr").textContent="Mobile 10 digit और password कम से कम 6 characters रखें.";return}
+  localStorage.setItem("cbm_mobile",m);
+  if(await hasVault()){if(!(await unlock(p)))$("#loginErr").textContent="Password गलत है या vault खुल नहीं पाया."; }
+  else await setup(p);
+}
+
+function renderApp(){
+  document.body.innerHTML=`<div class="app">
+  <header class="top"><div class="title">Card Bill Manager</div><div class="sub">Customers • Cards • Bills • Profit</div></header>
+  <main class="content" id="view"></main>
+  <nav class="nav">
+    <button onclick="homeView()" class="active">⌂<span>Home</span></button>
+    <button onclick="customersView()">👥<span>Customers</span></button>
+    <button class="fab" onclick="customerModal()">＋</button>
+    <button onclick="billsView()">▣<span>Bills</span></button>
+    <button onclick="profitView()">▥<span>Profit</span></button>
+  </nav></div>`;
+  homeView();
+}
+
+function homeView(){
+ const cs=appData.customers, tx=appData.transactions;
+ const income=tx.filter(t=>t.type==="withdrawal").reduce((a,t)=>a+t.income,0);
+ const cost=tx.filter(t=>t.type==="withdrawal").reduce((a,t)=>a+t.cost,0);
+ const pending=cs.flatMap(c=>c.cards||[]).reduce((a,x)=>a+(+x.due||0),0);
+ $("#view").innerHTML=`<div class="grid">
+ <div class="stat"><small>Customers</small><b>${cs.length}</b></div>
+ <div class="stat"><small>Total Income</small><b class="green">${fmt(income)}</b></div>
+ <div class="stat profitCard"><small>Net Profit</small><b class="green">${fmt(income-cost)}</b></div>
+ <div class="stat"><small>Total Due</small><b>${fmt(pending)}</b></div></div>
+ <div class="section">Recent Transactions</div>
+ ${tx.slice(-5).reverse().map(txRow).join("")||`<div class="empty">No transactions yet</div>`}
+ <div class="section">Quick Backup</div><div class="backupBox">
+ <div class="notice">Backup encrypted रहेगा। Restore करने के लिए यही vault password चाहिए।</div>
+ <div class="actions"><button class="primary" onclick="downloadBackup()">Backup</button><button class="btn" onclick="restoreInput.click()">Restore</button></div>
+ <input id="restoreInput" type="file" accept=".cbmbackup,.json" style="display:none" onchange="restoreBackup(this.files[0])">
+ </div>`;
+}
+function customersView(){
+ $("#view").innerHTML=`<div class="section" style="margin-top:4px">Customers</div>
+ <button class="primary" onclick="customerModal()">＋ Add Customer</button>
+ <div style="margin-top:14px">${appData.customers.map(c=>customerBlock(c)).join("")||`<div class="empty">Customer add करें</div>`}</div>`;
+}
+function customerBlock(c){
+ const s=customerStats(c);
+ return `<div class="customer"><div class="customerTop"><div class="avatar">${initials(c.name)}</div><div><b>${esc(c.name)}</b><div class="muted">☎ ${esc(c.mobile||"")}</div></div><div class="spacer"></div><button class="btn" onclick="customerModal('${c.id}')">Edit</button></div>
+ <div class="grid" style="margin-top:13px"><div class="stat"><small>${c.cards.length} Cards</small><b>${fmt(s.due)}</b><small>Total Due</small></div><div class="stat"><small>Total Limit</small><b>${fmt(s.limit)}</b><small>Available ${fmt(s.available)}</small></div></div>
+ <div class="section">Customer Cards (${c.cards.length})</div>
+ ${c.cards.map(cardBlock(c)).join("")}<div class="addCard" onclick="cardModal('${c.id}')">＋ Add New Card</div></div>`
+}
+function cardBlock(c){
+ return x=>`<div class="card ${cardClass(x.bank)}"><div class="cardHead"><div><div class="cardName">${esc(x.bank||"Bank")} • ${esc(x.name||"Card")}</div><div class="small">•••• ${esc(x.last4||"----")} ${esc(x.network||"")}</div></div><button class="btn" onclick="cardModal('${c.id}','${x.id}')">Edit</button></div>
+ <div class="due">${fmt(x.due)}</div><div class="cardFoot">
+ <div><small>LIMIT</small><b>${fmt(x.limit)}</b></div><div><small>AVAILABLE</small><b class="green">${fmt(x.available)}</b></div><div><small>STATEMENT</small><b>${fmt(x.statementAmount||0)}</b></div><div><small>DUE DATE</small><b>${esc(x.dueDate||"-")}</b></div></div>
+ <div class="small" style="margin-top:12px">Statement: ${esc(x.statementDate||"-")} • Next statement estimate: <b>${fmt(nextStatement(x))}</b></div></div>`
+}
+function nextStatement(card){
+ const tx=appData.transactions.filter(t=>t.cardId===card.id);
+ let n=Number(card.due)||0;
+ tx.forEach(t=>{if(t.type==="withdrawal")n+=Number(t.amount)||0;if(t.type==="billPayment")n-=Number(t.amount)||0});
+ return Math.max(0,n);
+}
+function txRow(t){
+ return `<div class="tx"><div class="txline"><b>${esc(t.type==="withdrawal"?"Withdrawal":"Bill Payment")}</b><b>${fmt(t.amount)}</b></div><div class="small">${esc(t.customerName)} • ${esc(t.cardName)} • ${esc(t.date)} ${t.type==="withdrawal"?`• Income ${fmt(t.income)} • Cost ${fmt(t.cost)}`:"• Charges ₹0"}</div></div>`
+}
+function billsView(){
+ const arr=appData.customers.flatMap(c=>(c.cards||[]).map(x=>({...x,customer:c.name}))).sort((a,b)=>(a.dueDate||"").localeCompare(b.dueDate||""));
+ $("#view").innerHTML=`<div class="section" style="margin-top:4px">Bills & Due</div>${arr.map(x=>`<div class="tx"><div class="txline"><b>${esc(x.customer)} — ${esc(x.bank)} ${esc(x.name)}</b><b>${fmt(x.due)}</b></div><div class="small">Statement ${esc(x.statementDate||"-")} • Due ${esc(x.dueDate||"-")} • Next estimate ${fmt(nextStatement(x))}</div></div>`).join("")||`<div class="empty">No cards</div>``
+}
+function profitView(){
+ const w=appData.transactions.filter(t=>t.type==="withdrawal");
+ const income=w.reduce((a,t)=>a+t.income,0), cost=w.reduce((a,t)=>a+t.cost,0);
+ $("#view").innerHTML=`<div class="section" style="margin-top:4px">Profit</div>
+ <div class="grid"><div class="stat"><small>Withdrawal Income</small><b class="green">${fmt(income)}</b></div><div class="stat"><small>Withdrawal Charges</small><b>${fmt(cost)}</b></div><div class="stat profitCard"><small>Net Profit</small><b class="green">${fmt(income-cost)}</b></div><div class="stat"><small>Withdrawals</small><b>${fmt(w.reduce((a,t)=>a+t.amount,0))}</b></div></div>
+ <div class="section">Transaction History</div>${w.slice().reverse().map(txRow).join("")||`<div class="empty">No withdrawal transactions</div>`}`;
+}
+
+function modal(title,body){
+ const d=document.createElement("div");d.className="modal show";d.id="modal";d.innerHTML=`<div class="sheet"><div class="txline"><div class="title" style="font-size:21px">${title}</div><button class="btn" onclick="closeModal()">✕</button></div>${body}</div>`;document.body.appendChild(d)
+}
+function closeModal(){document.getElementById("modal")?.remove()}
+function customerModal(id){
+ const c=id?appData.customers.find(x=>x.id===id):{id:"",name:"",mobile:"",cards:[]};
+ editingCustomer=id||null;
+ modal(id?"Edit Customer":"Add Customer",`<div class="field"><label>Customer Name</label><input id="cName" value="${esc(c.name)}"></div>
+ <div class="field"><label>Mobile</label><input id="cMobile" inputmode="numeric" value="${esc(c.mobile||"")}"></div>
+ <div class="actions"><button class="primary" onclick="saveCustomer()">Save</button>${id?`<button class="btn danger" onclick="deleteCustomer('${id}')">Delete</button>`:""}</div>`);
+}
+async function saveCustomer(){
+ const name=$("#cName").value.trim();if(!name)return;
+ if(editingCustomer){const c=appData.customers.find(x=>x.id===editingCustomer);c.name=name;c.mobile=$("#cMobile").value.trim()}
+ else appData.customers.push({id:uid(),name,mobile:$("#cMobile").value.trim(),cards:[]});
+ await save();closeModal();customersView();
+}
+async function deleteCustomer(id){if(confirm("Customer और उसके cards delete करें?")){appData.customers=appData.customers.filter(x=>x.id!==id);appData.transactions=appData.transactions.filter(x=>x.customerId!==id);await save();closeModal();customersView()}}
+function cardModal(cid,kid){
+ const c=appData.customers.find(x=>x.id===cid), x=kid?c.cards.find(y=>y.id===kid):{id:"",bank:"",name:"",network:"VISA",last4:"",limit:0,due:0,available:0,statementAmount:0,statementDate:"",dueDate:""};
+ editingCustomer=cid;editingCard=kid||null;
+ modal(kid?"Edit Card":"Add New Card",`<div class="field"><label>Bank</label><input id="bank" value="${esc(x.bank)}" placeholder="HDFC / Axis / SBI"></div>
+ <div class="field"><label>Card Name</label><input id="cardName" value="${esc(x.name)}" placeholder="Infinia / Atlas / Prime"></div>
+ <div class="field"><label>Network</label><select id="network"><option ${x.network==="VISA"?"selected":""}>VISA</option><option ${x.network==="Mastercard"?"selected":""}>Mastercard</option><option ${x.network==="RuPay"?"selected":""}>RuPay</option><option ${x.network==="Amex"?"selected":""}>Amex</option></select></div>
+ <div class="field"><label>Last 4 digits only</label><input id="last4" maxlength="4" inputmode="numeric" value="${esc(x.last4)}"></div>
+ <div class="notice">Security: पूरा 16-digit number और CVV store नहीं किया जाएगा। केवल last 4 digits रखें।</div>
+ <div class="grid"><div class="field"><label>Total Credit Limit</label><input id="limit" type="number" value="${x.limit||0}"></div><div class="field"><label>Current Due</label><input id="due" type="number" value="${x.due||0}"></div></div>
+ <div class="grid"><div class="field"><label>Available Limit</label><input id="available" type="number" value="${x.available||0}"></div><div class="field"><label>Current Statement</label><input id="statementAmount" type="number" value="${x.statementAmount||0}"></div></div>
+ <div class="grid"><div class="field"><label>Statement Date</label><input id="statementDate" type="date" value="${esc(x.statementDate||"")}"></div><div class="field"><label>Due Date</label><input id="dueDate" type="date" value="${esc(x.dueDate||"")}"></div></div>
+ <div class="actions"><button class="primary" onclick="saveCard()">Save Card</button>${kid?`<button class="btn danger" onclick="deleteCard('${cid}','${kid}')">Delete</button>`:""}</div>
+ <div class="section">Record Transaction</div>
+ <div class="actions"><button class="btn" onclick="txModal('${cid}','${kid||""}','withdrawal')">Withdrawal</button><button class="btn" onclick="txModal('${cid}','${kid||""}','billPayment')">Bill Payment</button></div>`);
+}
+async function saveCard(){
+ const c=appData.customers.find(x=>x.id===editingCustomer);
+ const vals={bank:$("#bank").value.trim(),name:$("#cardName").value.trim(),network:$("#network").value,last4:$("#last4").value.replace(/\D/g,"").slice(-4),limit:+$("#limit").value||0,due:+$("#due").value||0,available:+$("#available").value||0,statementAmount:+$("#statementAmount").value||0,statementDate:$("#statementDate").value,dueDate:$("#dueDate").value};
+ if(editingCard){Object.assign(c.cards.find(x=>x.id===editingCard),vals)}else c.cards.push({id:uid(),...vals});
+ await save();closeModal();customersView();
+}
+async function deleteCard(cid,kid){if(confirm("Card delete करें?")){const c=appData.customers.find(x=>x.id===cid);c.cards=c.cards.filter(x=>x.id!==kid);appData.transactions=appData.transactions.filter(t=>t.cardId!==kid);await save();closeModal();customersView()}}
+function txModal(cid,kid,type){
+ if(!kid){alert("पहले card save करें.");return}
+ const c=appData.customers.find(x=>x.id===cid), x=c.cards.find(y=>y.id===kid);
+ modal(type==="withdrawal"?"Withdrawal Entry":"Bill Payment Entry",`<div class="notice">${esc(c.name)} • ${esc(x.bank)} ${esc(x.name)}<br>${type==="withdrawal"?"Income 3% • Charges 1.7% • Net Profit 1.3%":"Bill payment charges ₹0"}</div>
+ <div class="field"><label>Amount</label><input id="txAmt" type="number" inputmode="decimal"></div><div class="field"><label>Date</label><input id="txDate" type="date" value="${today()}"></div>
+ <div class="actions"><button class="primary" onclick="saveTx('${cid}','${kid}','${type}')">Save</button></div>`);
+}
+async function saveTx(cid,kid,type){
+ const amt=+$("#txAmt").value||0;if(amt<=0)return;
+ const c=appData.customers.find(x=>x.id===cid),x=c.cards.find(y=>y.id===kid);
+ let income=0,cost=0;
+ if(type==="withdrawal"){income=amt*(appData.settings.withdrawIncome/100);cost=amt*(appData.settings.withdrawCost/100);x.due=(+x.due||0)+amt;x.available=Math.max(0,(+x.limit||0)-x.due)}
+ else {x.due=Math.max(0,(+x.due||0)-amt);x.available=Math.min(+x.limit||0,(+x.available||0)+amt)}
+ appData.transactions.push({id:uid(),customerId:cid,cardId:kid,customerName:c.name,cardName:(x.bank+" "+x.name).trim(),type,amount:amt,income,cost,date:$("#txDate").value});
+ await save();closeModal();customersView();
+}
+async function downloadBackup(){
+ const rec=await dbGet(); if(!rec)return;
+ const blob=new Blob([JSON.stringify({format:"CardBillManagerEncryptedBackup",version:6,exportedAt:new Date().toISOString(),vault:rec})],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="CardBillManager-backup-"+today()+".cbmbackup";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+async function restoreBackup(file){
+ if(!file)return;
+ try{
+  const obj=JSON.parse(await file.text());if(obj.format!=="CardBillManagerEncryptedBackup")throw Error("bad");
+  const pass=prompt("Backup restore करने के लिए वही vault password डालें:");
+  if(!pass)return;
+  const salt=new Uint8Array(ub64(obj.vault.salt)), key=await derive(pass,salt), data=await decryptData(obj.vault.pack,key);
+  if(!data.customers||!data.transactions)throw Error("bad data");
+  if(!confirm("Current data replace करके backup restore करें?"))return;
+  await dbPut(obj.vault);sessionSalt=salt;sessionKey=key;appData=data;render();
+ }catch(e){alert("Backup restore नहीं हुआ. Password/file check करें.")}
+}
+window.addEventListener("load",async()=>{if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});render()});
+</script>
+</body>
+</html>
